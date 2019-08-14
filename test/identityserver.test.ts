@@ -56,4 +56,54 @@ describe("IdeniityServer", () => {
             expect(res.status).to.be.equal(200);
         })
     })
+    describe("getAllReceivedClaims", () => {
+        it("Should get all received claims from the identity", async () => {
+            const provider = new Provider("remote", {"url": identityserverUrl});
+            const id = "119h9u2nXbtg5TmPsMm8W5bDkmVZhdS6TgKMvNWPU3";
+            const identity = await provider.loadIdentity(id);
+            expect(identity.id).to.equal("119h9u2nXbtg5TmPsMm8W5bDkmVZhdS6TgKMvNWPU3")
+
+            const res = await identity.getAllReceivedClaims();
+            expect(res.status).to.be.equal(200);
+            expect(res.data.receivedClaims).to.be.equal(null);
+        })
+    })
+    describe("getAllEmittedClaims", () => {
+        it("Should get all emitted claims from the identity", async () => {
+            const provider = new Provider("remote", {"url": identityserverUrl});
+            const id = "119h9u2nXbtg5TmPsMm8W5bDkmVZhdS6TgKMvNWPU3";
+            const identity = await provider.loadIdentity(id);
+            expect(identity.id).to.equal("119h9u2nXbtg5TmPsMm8W5bDkmVZhdS6TgKMvNWPU3")
+
+            const res = await identity.getAllEmittedClaims();
+            expect(res.status).to.be.equal(200);
+            expect(res.data.emittedClaims.length).to.be.equal(5);
+        })
+    })
+    describe("getAllClaims", () => {
+        it("Should get all claims (emitted and received) from the identity", async () => {
+            const provider = new Provider("remote", {"url": identityserverUrl});
+            const id = "119h9u2nXbtg5TmPsMm8W5bDkmVZhdS6TgKMvNWPU3";
+            const identity = await provider.loadIdentity(id);
+            expect(identity.id).to.equal("119h9u2nXbtg5TmPsMm8W5bDkmVZhdS6TgKMvNWPU3")
+
+            const res = await identity.getAllClaims();
+            expect(res.status).to.be.equal(200);
+            expect(res.data.emittedClaims.length).to.be.equal(5);
+            expect(res.data.receivedClaims).to.be.equal(null);
+        })
+    })
+    describe("getFullMT", () => {
+        it("Should get the complete MerkleTree", async () => {
+            const provider = new Provider("remote", {"url": identityserverUrl});
+            const id = "119h9u2nXbtg5TmPsMm8W5bDkmVZhdS6TgKMvNWPU3";
+            const identity = await provider.loadIdentity(id);
+            expect(identity.id).to.equal("119h9u2nXbtg5TmPsMm8W5bDkmVZhdS6TgKMvNWPU3")
+
+            const res = await identity.getFullMT();
+            expect(res.status).to.be.equal(200);
+            const mt = res.data.mt;
+            expect(mt["0x63757272656e74726f6f74"]).to.be.equal("0x030ab334f810092f25a057291dbd241275e170827af4214ab8278b6e138ac9c844");
+        })
+    })
 })

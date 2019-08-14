@@ -81,4 +81,48 @@ export class Identity {
             return err.response;
         }
     }
+    async getAllReceivedClaims() {
+        try {
+            let res = await axios.get(
+                this.provider.params["url"] + "/id/" + this.id + "/claims/received"
+            )
+            return res;
+        }
+        catch (err) {
+            return err.response;
+        }
+    }
+    async getAllEmittedClaims() {
+        try {
+            let res = await axios.get(
+                this.provider.params["url"] + "/id/" + this.id + "/claims/emitted"
+            )
+            return res;
+        }
+        catch (err) {
+            return err.response;
+        }
+    }
+    async getAllClaims() {
+        try {
+            let res = await axios.get(
+                this.provider.params["url"] + "/id/" + this.id + "/claims"
+            )
+            return res;
+        }
+        catch (err) {
+            return err.response;
+        }
+    }
+    async getFullMT() {
+        try {
+            let res = await axios.get(
+                this.provider.params["url"] + "/id/" + this.id + "/mt"
+            )
+            return res;
+        }
+        catch (err) {
+            return err.response;
+        }
+    }
 }
