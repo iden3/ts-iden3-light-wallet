@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-import * as iden3 from '../../../iden3js/lib/';
+import * as iden3 from "../../../iden3js/lib/";
 
 export interface Claim {
 }
@@ -17,7 +17,7 @@ export class Provider {
         // build ClaimAuthKOp
         let claimAuthKOp = new iden3.claim.AuthorizeKSignBabyJub(kOp);
         const data = {
-            claimAuthKOp: (claimAuthKOp.toEntry()).toHex(),
+            claimAuthKOp: claimAuthKOp.toEntry().toHex(),
             extraGenesisClaims: genesisExtraClaims
         }
         // send data to IdentityServer
@@ -35,8 +35,7 @@ export class Provider {
     }
 
     loadIdentity(id: string): Identity {
-        // TODO
-        const identity = new Identity(this, "todo");
+        const identity = new Identity(this, id);
         return identity;
     }
 }
@@ -48,8 +47,38 @@ export class Identity {
         this.provider = provider;
         this.id = id;
     }
-    addClaim(claim: Claim) {
-        // TODO
-
+    async addClaim(claim: any) {
+        // TODO once the iden3js is converted to Typescript (hopefully near future)
+        // this kind of functions will require the Claim type, meanwhile we use 'any'
+        const claimHex = claim.toEntry().toHex();
+        // send data to IdentityServer
+        try {
+            let res = await axios.post(
+                this.provider.params["url"] + "/id/" + this.id + "/claim",
+                {claim: claimHex}
+            )
+            return res;
+        }
+        catch (err) {
+            return err.response;
+        }
+    }
+    async addClaims(claims: any[]) {
+        let claimsHex = [];
+        for(let i=0; i<claims.length; i++) {
+            const claimHex = claims[i].toEntry().toHex();
+            claimsHex.push(claimHex);
+        }
+        // send data to IdentityServer
+        try {
+            let res = await axios.post(
+                this.provider.params["url"] + "/id/" + this.id + "/claims",
+                {claims: claimsHex}
+            )
+            return res;
+        }
+        catch (err) {
+            return err.response;
+        }
     }
 }
