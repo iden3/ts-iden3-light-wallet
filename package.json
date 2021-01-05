@@ -21,7 +21,7 @@
     "postinstall": "rm -Rf node_modules/ganache-core/node_modules/web3-providers-ws/node_modules/websocket/.git || true"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "joi-browser": "^13.4.0"
   },
   "devDependencies": {
